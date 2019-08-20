@@ -1,0 +1,1 @@
+import './router/' // 如果是index.js可以省略index.js
