@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path') // Node.js中的模块
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const copyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -15,7 +15,13 @@ module.exports = {
   // 做webpack-dev-server的配置
   devServer: {
     contentBase: path.resolve(__dirname, '../dev'),
-    port: 8000
+    port: 8000,
+    // 代理
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000"
+      }
+    }
   },
   // loader
   module: {
@@ -23,6 +29,10 @@ module.exports = {
       {
         test: /\.art$/,
         loader: "art-template-loader"
+      },
+      {
+        test: /\.(scss|css)$/,
+        loader: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },
@@ -32,7 +42,6 @@ module.exports = {
     new htmlWebpackPlugin({
       template: './index.html',
       filename: 'index.html',
-      title: 'aaaaa'
     }),
     // 拷贝 public source
     new copyWebpackPlugin([{
