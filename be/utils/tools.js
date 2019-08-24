@@ -16,7 +16,7 @@ module.exports = {
   compare(myPlaintextPassword, hash) {
     return new Promise((resolve, reject) => {
       bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
-        console.log(res)
+        // console.log(res)
         resolve(res)
       })
     })

@@ -1,6 +1,6 @@
 const mongoose = require('../utils/db')
 
-const Users = mongoose.model('users', { // 在数据库中创建了一个集合
+const Users = mongoose.model('users', { // 定义一个模型，在数据库中创建了一个集合
   username: String,
   password: String
 })

@@ -32,7 +32,7 @@ module.exports = {
     }
     res.render('fail', {
       data: JSON.stringify({
-        msg: '用户已存在'
+        msg: '用户名已存在'
       })
     })
   },
@@ -45,6 +45,9 @@ module.exports = {
     // console.log(result)
     if(result) {
       if(await tools.compare(password, result.password)) {
+        // res.cookie('name', 'xxp') // 后端种了个cookie
+        // req.session 可以贯穿express所有的中间件，不用传递，只要req在
+        req.session.username = username // 用中间件生成了个cookie
         res.render('success', {
           data: JSON.stringify({
             msg: '用户登录成功',
@@ -65,5 +68,37 @@ module.exports = {
         })
       })
     }
+  },
+
+  async isSignin(req, res, next) {
+    // console.log(1)
+    res.set('content-type', 'application/json;charset=utf-8') // 定义返回的字符串为json字符串
+    let username = req.session.username
+    if (username) {
+      // console.log(req.url)
+      res.render('success', {
+        data: JSON.stringify({
+          msg: '用户有权限',
+          username
+        })
+      })
+      // next()
+    } else {
+      res.render('fail', {
+        data: JSON.stringify({
+          msg: '用户没有权限',
+        })
+      })
+    }
+  },
+
+  async signout(req, res, next) {
+    // console.log(2)
+    req.session = null
+    res.render('success', {
+      data: JSON.stringify({
+        msg: '用户登出成功',
+      })
+    })
   }
 }
